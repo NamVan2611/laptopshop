@@ -47,10 +47,12 @@ public class UserService {
     }
     public User transferRegisterToUser(RegisterDTO registerDTO){
         User user = new User();
-        user.setFullName(registerDTO.getFirstName() + registerDTO.getLastName());
+        user.setFullName(registerDTO.getFirstName() + "" + registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(registerDTO.getPassword());
         user.setPassword(registerDTO.getConfirmPassword());
+        user.setAddress(registerDTO.getAddress());
+        user.setPhone(registerDTO.getPhone());
         return user;
     }
     

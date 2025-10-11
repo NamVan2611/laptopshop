@@ -52,7 +52,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE)
-                        .permitAll().requestMatchers("/", "/login", "/client/**", "/product/**","/css/**", "/js/**", "/images/**")
+                        .permitAll().requestMatchers("/", "/login", "/client/**", "/register/**", "/product/**","/css/**", "/js/**", "/images/**")
                         .permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())

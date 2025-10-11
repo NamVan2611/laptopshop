@@ -2,11 +2,11 @@ package vn.spring.laptopshop.controller.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +20,12 @@ import vn.spring.laptopshop.domain.Cart;
 import vn.spring.laptopshop.domain.CartDetail;
 import vn.spring.laptopshop.domain.Product;
 import vn.spring.laptopshop.domain.User;
+import vn.spring.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.spring.laptopshop.service.ProductService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+
+import io.micrometer.common.util.StringUtils;
 
 @Controller
 public class ItemController {
@@ -44,9 +47,7 @@ public class ItemController {
     @PostMapping("/add-product-to-cart/{id}")
     public String addProductToCart(@PathVariable long id, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        long productId = id;
-        String email = (String) session.getAttribute("email");
-        this.productService.handleAddProductToCart(email, productId, session, 1);
+        this.productService.handleAddProductToCart(session, id, 1);
         return "redirect:/";
     }
 
@@ -121,19 +122,30 @@ public class ItemController {
     public String addProductFromViewDetail(@RequestParam("id") long id, @RequestParam("quantity") long quantity,
             HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        String email = (String) session.getAttribute("email");
-        this.productService.handleAddProductToCart(email, id, session, quantity);
+        this.productService.handleAddProductToCart(session, id, quantity);
         return "redirect:/product/" + id;
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
-        Pageable pageable = PageRequest.of(page - 1, 6);
-        Page<Product> productPage = this.productService.getAllProduct(pageable);
-        List<Product> productList = productPage.getContent();
-        model.addAttribute("products", productList);
+    public String getProducts(Model model, ProductCriteriaDTO productCriteriaDTO, HttpServletRequest request) {
+        int page = 1;
+        try {
+            if (Objects.nonNull(productCriteriaDTO.getPage()) && productCriteriaDTO.getPage().isPresent()) {
+                page = Integer.parseInt(productCriteriaDTO.getPage().get());
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid page number");
+        }
+        PageRequest pageRequest = productService.getPageRequest(productCriteriaDTO, page);
+        Page<Product> products = productService.findAll(pageRequest, productCriteriaDTO);
+        String qs = request.getQueryString();
+        if (StringUtils.isNotEmpty(qs)) {
+            qs = qs.replace("page=" + page, "");
+        }
+        model.addAttribute("products", products.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("queryString", qs);
         return "client/product/show";
     }
 

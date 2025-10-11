@@ -45,7 +45,7 @@ public class CustomSuccessConfig implements AuthenticationSuccessHandler {
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return;
         }
@@ -57,6 +57,7 @@ public class CustomSuccessConfig implements AuthenticationSuccessHandler {
             session.setAttribute("avatar", user.getAvatar());
             session.setAttribute("id", user.getId());
             session.setAttribute("email", user.getEmail());
+            session.setAttribute("role", user.getRole().getName());
             int sum = user.getCart() == null ? 0 : user.getCart().getSum();
             session.setAttribute("sum", sum);
         }
@@ -71,7 +72,8 @@ public class CustomSuccessConfig implements AuthenticationSuccessHandler {
         if (response.isCommitted()) {
             return;
         }
-        redirectStrategy.sendRedirect(request, response, targetUrl);
         clearAuthenticationAttributes(request, authentication);
+        redirectStrategy.sendRedirect(request, response, targetUrl);
+        
     }
 }

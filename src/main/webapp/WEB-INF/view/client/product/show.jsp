@@ -101,23 +101,18 @@
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="target-2"
-                                                value="SINH-VIEN-VAN-PHONG">
-                                            <label class="form-check-label" for="target-2">Sinh viên - văn phòng</label>
+                                                value="OFFICE">
+                                            <label class="form-check-label" for="target-2">Office</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="target-3"
-                                                value="THIET-KE-DO-HOA">
-                                            <label class="form-check-label" for="target-3">Thiết kế đồ họa</label>
+                                                value="DESIGN">
+                                            <label class="form-check-label" for="target-3">Design</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="target-4"
-                                                value="MONG-NHE">
-                                            <label class="form-check-label" for="target-4">Mỏng nhẹ</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input" id="target-5"
-                                                value="DOANH-NHAN">
-                                            <label class="form-check-label" for="target-5">Doanh nhân</label>
+                                                value="CONVENIENT">
+                                            <label class="form-check-label" for="target-4">Convenient</label>
                                         </div>
                                     </div>
                                     <div class="col-12" id="priceFilter">
