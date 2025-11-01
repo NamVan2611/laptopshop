@@ -51,4 +51,21 @@ public class OrderService {
     public List<Order> getOrderByUser(User user){
         return this.orderRepository.findByUser(user);
     }
+
+    public Page<Order> findWithFilters(String search, String status, Pageable pageable) {
+        return this.orderRepository.findWithFilters(search, status, pageable);
+    }
+
+    public double getTotalRevenue() {
+        return this.orderRepository.findAll().stream()
+                .filter(o -> "COMPLETED".equals(o.getStatus()))
+                .mapToDouble(Order::getTotalPrice)
+                .sum();
+    }
+
+    public long countOrdersByStatus(String status) {
+        return this.orderRepository.findAll().stream()
+                .filter(o -> status.equals(o.getStatus()))
+                .count();
+    }
 }

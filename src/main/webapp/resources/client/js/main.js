@@ -26,20 +26,20 @@
             } else {
                 $('.fixed-top').removeClass('shadow').css('top', 0);
             }
-        } 
+        }
     });
-    
-    
-   // Back to top button
-   $(window).scroll(function () {
-    if ($(this).scrollTop() > 300) {
-        $('.back-to-top').fadeIn('slow');
-    } else {
-        $('.back-to-top').fadeOut('slow');
-    }
+
+
+    // Back to top button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').fadeIn('slow');
+        } else {
+            $('.back-to-top').fadeOut('slow');
+        }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
@@ -52,27 +52,27 @@
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:1
+            768: {
+                items: 1
             },
-            992:{
-                items:2
+            992: {
+                items: 2
             },
-            1200:{
-                items:2
+            1200: {
+                items: 2
             }
         }
     });
@@ -86,27 +86,27 @@
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             },
-            1200:{
-                items:4
+            1200: {
+                items: 4
             }
         }
     });
@@ -211,7 +211,7 @@
         let priceArr = [];
 
         $("#factoryFilter .form-check-input:checked").each(function () {
-           factoryArr.push($(this).val());
+            factoryArr.push($(this).val());
         });
         $("#targetFilter .form-check-input:checked").each(function () {
             targetArr.push($(this).val());
@@ -276,54 +276,54 @@
 
     //handle add to cart with ajax
     $('.btnAddToCartHomepage').click(function (event) {
-       event.preventDefault();
+        event.preventDefault();
 
-       if (!isLogin()) {
-           $.toast({
-               heading: 'Lỗi thao tác',
-               text : 'Bạn cần đăng nhập tài khoản',
-               position: 'top-right',
-               icon: 'error'
-           })
-           return;
-       }
+        if (!isLogin()) {
+            $.toast({
+                heading: 'Lỗi thao tác',
+                text: 'Bạn cần đăng nhập tài khoản',
+                position: 'top-right',
+                icon: 'error'
+            })
+            return;
+        }
 
-       const productId = $(this).attr('data-product-id');
-       const token = $("meta[name='_csrf']").attr("content");
-       const header = $("meta[name='_csrf_header']").attr("content");
-       const quantity = $("#cartDetails0\\.quantity").val();
+        const productId = $(this).attr('data-product-id');
+        const token = $("meta[name='_csrf']").attr("content");
+        const header = $("meta[name='_csrf_header']").attr("content");
+        const quantity = $("#cartDetails0\\.quantity").val();
 
-       $.ajax({
-           url: `${window.location.origin}/api/add-product-to-cart`,
-           beforeSend: function (xhr) {
-               xhr.setRequestHeader(header, token);
-               console.log(this.uri)
-           },
-           type: "POST",
-           data: JSON.stringify({quantity: quantity, productId: productId}),
-           contentType: "application/json",
+        $.ajax({
+            url: `${window.location.origin}/api/add-product-to-cart`,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+                console.log(this.uri)
+            },
+            type: "POST",
+            data: JSON.stringify({ quantity: quantity, productId: productId }),
+            contentType: "application/json",
 
-           success: function (response) {
-               const sum = +response;
-               //update cart
-               $("#sumCart").text(sum);
-               //show message
-               $.toast({
-                   heading: 'Giỏ hàng',
-                   text : 'Thêm vào giỏ hàng thành công',
-                   position: 'top-right',
-               })
-           },
-           error: function (response) {
-               $.toast({
-                   heading: 'Lỗi',
-                   text : 'Có lỗi xảy ra',
-                   position: 'top-right',
-                   icon: 'error'
-               })
-               console.log("error: ", response)
-           }
-       })
+            success: function (response) {
+                const sum = +response;
+                //update cart
+                $("#sumCart").text(sum);
+                //show message
+                $.toast({
+                    heading: 'Giỏ hàng',
+                    text: 'Thêm vào giỏ hàng thành công',
+                    position: 'top-right',
+                })
+            },
+            error: function (response) {
+                $.toast({
+                    heading: 'Lỗi',
+                    text: 'Có lỗi xảy ra',
+                    position: 'top-right',
+                    icon: 'error'
+                })
+                console.log("error: ", response)
+            }
+        })
     });
 
     $('.btnAddToCartDetail').click(function (event) {
@@ -332,7 +332,7 @@
         if (!isLogin()) {
             $.toast({
                 heading: 'Lỗi thao tác',
-                text : 'Bạn cần đăng nhập tài khoản',
+                text: 'Bạn cần đăng nhập tài khoản',
                 position: 'top-right',
                 icon: 'error'
             })
@@ -350,7 +350,7 @@
                 xhr.setRequestHeader(header, token);
             },
             type: "POST",
-            data: JSON.stringify({quantity: quantity, productId: productId}),
+            data: JSON.stringify({ quantity: quantity, productId: productId }),
             contentType: "application/json",
 
             success: function (response) {
@@ -360,14 +360,14 @@
                 //show message
                 $.toast({
                     heading: 'Giỏ hàng',
-                    text : 'Thêm vào giỏ hàng thành công',
+                    text: 'Thêm vào giỏ hàng thành công',
                     position: 'top-right',
                 })
             },
             error: function (response) {
                 $.toast({
                     heading: 'Lỗi',
-                    text : 'Có lỗi xảy ra',
+                    text: 'Có lỗi xảy ra',
                     position: 'top-right',
                     icon: 'error'
                 })
@@ -381,6 +381,64 @@
         const childLogin = navElement.find('a.a-login');
         return !(childLogin.length > 0);
     }
+    // ==========================
+    // 💬 Chatbot Integration
+    // ==========================
+    $(document).ready(function () {
+        const chatBtn = $('#chat-btn');
+        const chatPopup = $('#chat-popup');
+        const closeChat = $('#close-chat');
+        const sendBtn = $('#send-btn');
+        const messageInput = $('#message');
+        const chatMessages = $('#chat-messages');
 
+        // Kiểm tra tồn tại phần tử (tránh lỗi nếu trang khác không có chatbot)
+        if (!chatBtn.length || !chatPopup.length) return;
+
+        // Mở/tắt cửa sổ chat
+        chatBtn.on('click', function () {
+            chatPopup.css('display', 'flex');
+            chatBtn.hide(); // ẩn nút khi mở chat
+        });
+
+        closeChat.on('click', function () {
+            chatPopup.css('display', 'none');
+            chatBtn.show(); // hiện lại nút khi đóng chat
+        });
+
+        // Gửi tin nhắn
+        sendBtn.on('click', sendMessage);
+        messageInput.on('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function sendMessage() {
+            const msg = messageInput.val().trim();
+            if (!msg) return;
+
+            appendMessage(msg, 'user');
+            messageInput.val('');
+
+            fetch('http://localhost:5000/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msg })
+            })
+                .then(res => res.json())
+                .then(data => appendMessage(data.reply, 'bot'))
+                .catch(() => appendMessage('Lỗi kết nối chatbot', 'bot'));
+        }
+
+        function appendMessage(text, sender) {
+            const msgDiv = $('<div>')
+                .addClass('message')
+                .addClass(sender)
+                .text(text);
+            chatMessages.append(msgDiv);
+            chatMessages.scrollTop(chatMessages.prop('scrollHeight'));
+        }
+    });
 })(jQuery);
+
+
 

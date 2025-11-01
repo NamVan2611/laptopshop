@@ -27,13 +27,28 @@ public class OrderController {
     }
 
     @GetMapping("/admin/order")
-    public String getDashboard(Model model, @RequestParam(name="page", defaultValue = "1") int page) {
-        Pageable pageable = PageRequest.of(page-1, 4);
-        Page<Order> orderPage = this.orderService.getAllOrder(pageable);
+    public String getDashboard(Model model, 
+                               @RequestParam(name="page", defaultValue = "1") int page,
+                               @RequestParam(name="search", required = false) String search,
+                               @RequestParam(name="status", required = false) String status) {
+        Pageable pageable = PageRequest.of(page-1, 10);
+        Page<Order> orderPage;
+        
+        if ((search != null && !search.isEmpty()) || (status != null && !status.isEmpty())) {
+            orderPage = this.orderService.findWithFilters(
+                search != null ? search : "",
+                status != null ? status : "",
+                pageable);
+        } else {
+            orderPage = this.orderService.getAllOrder(pageable);
+        }
+        
         List<Order> orderList = orderPage.getContent();
         model.addAttribute("order", orderList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("search", search);
+        model.addAttribute("status", status);
         return "admin/order/show";
     }
 
@@ -43,8 +58,10 @@ public class OrderController {
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             model.addAttribute("order", order);
+            return "admin/order/detail";
+        } else {
+            return "redirect:/admin/order";
         }
-        return "admin/order/detail";
     }
 
     @RequestMapping("/admin/order/update/{id}")
@@ -53,8 +70,10 @@ public class OrderController {
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             model.addAttribute("newOrder", order);
+            return "admin/order/update";
+        } else {
+            return "redirect:/admin/order";
         }
-        return "admin/order/update";
     }
 
     @PostMapping("/admin/order/update")
@@ -73,10 +92,17 @@ public class OrderController {
 
     @RequestMapping("/admin/order/delete/{id}")
     public String getDeleteOrderPage(Model model, @PathVariable long id) {
-        model.addAttribute("id", id);
-        Order order = new Order();
-        order.setId(id);
-        model.addAttribute("newOrder", order);
+        Optional<Order> orderOptional = this.orderService.getOrderById(id);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            model.addAttribute("newOrder", order);
+            model.addAttribute("id", id);
+        } else {
+            model.addAttribute("id", id);
+            Order order = new Order();
+            order.setId(id);
+            model.addAttribute("newOrder", order);
+        }
         return "admin/order/delete";
     }
 

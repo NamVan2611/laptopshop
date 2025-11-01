@@ -67,4 +67,8 @@ public class UserService {
     public long countUsers() {
         return this.userRepository.count();
     }
+
+    public Page<User> findWithFilters(String search, String role, Pageable pageable) {
+        return this.userRepository.findWithFilters(search, role, pageable);
+    }
 }

@@ -79,7 +79,8 @@
                                                         <div class="rounded position-relative fruite-item">
                                                             <div class="fruite-img">
                                                                 <img src="/images/product/${product.image}"
-                                                                    class="img-fluid w-100 rounded-top"  style="height: 200px; object-fit: contain;" alt="">
+                                                                    class="img-fluid w-100 rounded-top"
+                                                                    style="height: 200px; object-fit: contain;" alt="">
                                                             </div>
                                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                                                 style="top: 10px; left: 10px;">Laptop</div>
@@ -98,14 +99,20 @@
                                                                         <fmt:formatNumber type="number"
                                                                             value="${product.price}" /> đ
                                                                     </p>
-                                                                    
-                                                                    <form action="/add-product-to-cart/${product.id}" method="post">
-                                                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                                                        <button type="submit" class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
-                                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+
+                                                                    <form action="/add-product-to-cart/${product.id}"
+                                                                        method="post">
+                                                                        <input type="hidden"
+                                                                            name="${_csrf.parameterName}"
+                                                                            value="${_csrf.token}" />
+                                                                        <button type="submit"
+                                                                            class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
+                                                                            <i
+                                                                                class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                                            Add to cart
                                                                         </button>
                                                                     </form>
-                                                        
+
                                                                     <!-- <input type="hidden" name="quantity"
                                                                         id="cartDetails0.quantity" value="1" />
                                                                     <button data-product-id="${product.id}"
@@ -129,6 +136,7 @@
                 </div>
                 <!-- Fruits Shop End-->
 
+                <jsp:include page="../chatbot/chatbot.jsp" />
                 <jsp:include page="../layout/feature.jsp" />
 
                 <jsp:include page="../layout/footer.jsp" />
@@ -147,8 +155,8 @@
                 <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
 
                 <!-- Template Javascript -->
-                <script src="/client/js/main.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.js"></script>
+                <script src="/client/js/main.js"></script>
             </body>
 
             </html>

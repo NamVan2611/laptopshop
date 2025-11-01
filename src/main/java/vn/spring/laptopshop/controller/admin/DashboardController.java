@@ -29,6 +29,11 @@ public class DashboardController {
         model.addAttribute("countUsers", this.userService.countUsers());
         model.addAttribute("countProducts", this.productService.countProducts());
         model.addAttribute("countOrders", this.orderService.countOrders());
+        model.addAttribute("totalRevenue", this.orderService.getTotalRevenue());
+        model.addAttribute("totalSold", this.productService.getTotalSold());
+        model.addAttribute("pendingOrders", this.orderService.countOrdersByStatus("PENDING"));
+        model.addAttribute("completedOrders", this.orderService.countOrdersByStatus("COMPLETED"));
+        model.addAttribute("processingOrders", this.orderService.countOrdersByStatus("PROCESSING"));
         return "admin/dashboard/show";
     }
     

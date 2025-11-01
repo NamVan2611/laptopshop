@@ -74,6 +74,10 @@ public class ProductService {
         return product.orElse(null);
     }
 
+    public Page<Product> getByFactory(String factory, Pageable pageable) {
+        return this.productRepository.findByFactoryIgnoreCase(factory, pageable);
+    }
+
     public Page<Product> findAll(Pageable pageable, ProductCriteriaDTO productCriteriaDTO) {
         Specification<Product> combineSpecifications = Specification.where(null);
         if (Objects.nonNull(productCriteriaDTO.getFactory()) && productCriteriaDTO.getFactory().isPresent()) {
@@ -160,7 +164,7 @@ public class ProductService {
         if (Objects.isNull(user)) {
             System.out.println("User not found");
         }
-        //Create new cart
+        // Create new cart
         Cart cart = cartRepository.findByUser(user);
         if (Objects.isNull(cart)) {
             cart = new Cart();
@@ -168,7 +172,7 @@ public class ProductService {
             cart.setSum(0);
             cart = cartRepository.save(cart);
         }
-        //Save cart detail
+        // Save cart detail
         Product product = findById(id);
         CartDetail cartDetail = cartDetailRepository.findByCartAndProduct(cart, product);
         if (Objects.isNull(cartDetail)) {
@@ -178,7 +182,7 @@ public class ProductService {
             cartDetail.setQuantity(quantity);
             cartDetail.setPrice(product.getPrice());
 
-            //Update sum cart
+            // Update sum cart
             cart.setSum(cart.getSum() + 1);
             cartRepository.save(cart);
             session.setAttribute("sum", cart.getSum());
@@ -238,5 +242,15 @@ public class ProductService {
 
     public long countProducts() {
         return this.productRepository.count();
+    }
+
+    public Page<Product> findWithFilters(String search, String factory, String target, Pageable pageable) {
+        return this.productRepository.findWithFilters(search, factory, target, pageable);
+    }
+
+    public long getTotalSold() {
+        return this.productRepository.findAll().stream()
+                .mapToLong(Product::getSold)
+                .sum();
     }
 }

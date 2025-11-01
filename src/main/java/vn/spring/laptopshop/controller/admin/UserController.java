@@ -47,13 +47,28 @@ public class UserController {
     }
 
     @RequestMapping("/admin/user")
-    public String getUserPage(Model model, @RequestParam(name="page", defaultValue = "1")int page) {
-        Pageable pageable = PageRequest.of(page-1, 4);
-        Page<User> userPage = this.userService.getAllUsers(pageable);
+    public String getUserPage(Model model, 
+                               @RequestParam(name="page", defaultValue = "1") int page,
+                               @RequestParam(name="search", required = false) String search,
+                               @RequestParam(name="role", required = false) String role) {
+        Pageable pageable = PageRequest.of(page-1, 10);
+        Page<User> userPage;
+        
+        if ((search != null && !search.isEmpty()) || (role != null && !role.isEmpty())) {
+            userPage = this.userService.findWithFilters(
+                search != null ? search : "",
+                role != null ? role : "",
+                pageable);
+        } else {
+            userPage = this.userService.getAllUsers(pageable);
+        }
+        
         List<User> users = userPage.getContent();
         model.addAttribute("users", users);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("search", search);
+        model.addAttribute("role", role);
         return "admin/user/show";
     }
 
